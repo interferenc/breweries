@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-gray-100;
+}
+
+table {
+    @apply bg-white rounded-lg w-full;
+}
+
+table td {
+    @apply py-2 px-6;
+}
+
+a {
+    @apply text-blue-600;
+}
