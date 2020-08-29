@@ -8,22 +8,22 @@ export const Pagination = defineComponent({
       required: true
     }
   },
-  setup(props) {
-    return () =>
-      h("div", { class: "flex" }, [
-        h(
-          RouterLink,
-          { to: { query: { page: Math.max(1, props.page - 1) } } },
-          "Previous page"
-        ),
-        h(
-          RouterLink,
-          {
-            class: "ml-auto",
-            to: { query: { page: props.page + 1 } }
-          },
-          "Next page"
-        )
-      ]);
-  }
+  setup: props => () =>
+    h("div", { class: "flex" }, [
+      props.page > 1
+        ? h(
+            RouterLink,
+            { to: { query: { page: props.page - 1 } } },
+            () => "Previous page"
+          )
+        : null,
+      h(
+        RouterLink,
+        {
+          class: "ml-auto",
+          to: { query: { page: props.page + 1 } }
+        },
+        () => "Next page"
+      )
+    ])
 });

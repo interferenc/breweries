@@ -1,11 +1,11 @@
-import { h, defineComponent, watch } from "vue";
+import { h, defineComponent, watch, VNode } from "vue";
 import { get } from "@/services/resources/brewery/actions";
-import { useApiTask, fold } from "../concerns/useApiTask";
+import { useApiTask, foldTaskState } from "../concerns";
 import { RouterLink } from "vue-router";
-import { Box } from "../components/Box";
-import { Subtitle } from "../components/Subtitle";
-import { Title } from "../components/Title";
-import { ErrorMessage } from "../components/ErrorMessage";
+import { Box, Subtitle, Title, ErrorMessage, Loader, Tag } from "../components";
+import { foldString } from "../helpers";
+import { fold as foldOption } from "fp-ts/lib/Option";
+import { GeographicLocation } from "@/entities/brewery/Brewery";
 
 export const DetailView = defineComponent({
   props: {
@@ -15,29 +15,48 @@ export const DetailView = defineComponent({
     }
   },
   setup(props) {
-    console.log(props);
-    const apiTask = useApiTask(() => get(props.id));
-    watch(props, apiTask.execute);
-    apiTask.execute();
+    const { executeTask, taskState } = useApiTask(() => get(props.id));
+    executeTask();
+
+    watch(props, executeTask);
 
     return () =>
       h("div", [
-        h(Box, () =>
-          fold(apiTask.state.value, {
-            initial: () => h("div", "initial"),
-            pending: () => h("div", "pending"),
-            error: error =>
-              h(ErrorMessage, {
-                code: error.code,
-                onRetry: apiTask.execute
-              }),
-            result: result =>
-              h("div", [
-                h(Title, () => result.name),
-                h("p", result.address.city)
-              ])
-          })
-        ),
+        foldTaskState(taskState.value, {
+          initial: () => null,
+          pending: () => h(Loader),
+          error: ({ code }) => h(ErrorMessage, { code, onRetry: executeTask }),
+          result: result =>
+            h(Box, { class: "flex" }, () => [
+              h("div", { class: "flex-1" }, [
+                h(Title, () => [result.name, h(Tag, () => result.type)]),
+                h("p", foldString(result.address.street)),
+                h(
+                  "p",
+                  `${foldString(result.address.city)}, ${foldString(
+                    result.address.state
+                  )}`
+                ),
+                h("p", foldString(result.address.country)),
+                h("p", `Phone: ${foldString(result.phone)}`),
+                foldOption<string, VNode | null>(
+                  () => null,
+                  website => h("a", { href: website }, website)
+                )(result.website)
+              ]),
+
+              foldOption<GeographicLocation, VNode | null>(
+                () => null,
+                ({ latitude, longitude }) =>
+                  h("img", {
+                    class: "rounded",
+                    style:
+                      "background-color: #ECE7E2; width: 200px; height: 200px;",
+                    src: `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${longitude},${latitude},12,0/200x200?access_token=pk.eyJ1IjoiaW50ZXJmZWNvIiwiYSI6ImNrZWZxeHoxMzBzejgzNnQ1N2U1djlvc3kifQ.4FBmQ_sbClfeyMKuunHx1g`
+                  })
+              )(result.coordinates)
+            ])
+        }),
         h(Subtitle, () => "Featured breweries"),
         h("ul", { class: "list-disc pl-6" }, [
           h(

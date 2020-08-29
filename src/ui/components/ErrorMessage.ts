@@ -10,16 +10,14 @@ export const ErrorMessage = defineComponent({
       required: true
     }
   },
-  setup(props, { emit }) {
-    return () =>
-      h(
-        "div",
-        { class: "bg-white border-red-400 border-2 rounded-lg p-4 mb-6" },
-        [
-          h(Subtitle, () => "Error"),
-          h("p", { class: "mb-3" }, apiError(props.code)),
-          h(Button, { onClick: () => emit("retry") }, () => "Retry")
-        ]
-      );
-  }
+  setup: (props, { emit }) => () =>
+    h(
+      "div",
+      { class: "bg-white border-red-400 border-2 rounded-lg p-4 mb-6" },
+      [
+        h(Subtitle, () => "Error"),
+        h("p", { class: "mb-3" }, apiError(props.code)),
+        h(Button, { onClick: () => emit("retry") }, () => "Retry")
+      ]
+    )
 });

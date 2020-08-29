@@ -1,10 +1,14 @@
-import { RouteRecordRaw } from "vue-router";
+import { RouteRecordRaw, RouteLocationNormalized } from "vue-router";
 import { HomeView } from "@/ui/views/HomeView";
 import { DetailView } from "@/ui/views/DetailView";
 import { IndexView } from "@/ui/views/IndexView";
 import { EmptyLayout } from "../layouts/EmptyLayout";
 import { NavbarLayout } from "../layouts/NavbarLayout";
 import { AboutView } from "../views/AboutView";
+
+const idFromRoute = (route: RouteLocationNormalized) => ({
+  id: parseInt(route.params.id as string, 10)
+});
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -31,9 +35,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/breweries/:id",
         name: "detail",
         component: DetailView,
-        props: route => ({
-          id: parseInt(route.params.id as string, 10)
-        })
+        props: idFromRoute
       },
       {
         path: "/about",

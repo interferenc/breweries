@@ -5,21 +5,26 @@ import {
   BreweryRecord,
   BreweryList
 } from "@/entities/brewery/Brewery";
+import { isSome, some, none, getOrElse } from "fp-ts/lib/Option";
 
 export const breweryTransformer = (
   brewery: t.TypeOf<typeof breweryCodec>
 ): Brewery => ({
   name: brewery.name,
+  type: brewery.brewery_type,
   address: {
     street: brewery.street,
     city: brewery.city,
     state: brewery.state,
     country: brewery.country
   },
-  coordinates: {
-    longitude: brewery.longitude,
-    latitude: brewery.latitude
-  },
+  coordinates:
+    isSome(brewery.longitude) && isSome(brewery.latitude)
+      ? some({
+          longitude: getOrElse<number>(() => 0)(brewery.longitude),
+          latitude: getOrElse<number>(() => 0)(brewery.latitude)
+        })
+      : none,
   phone: brewery.phone,
   website: brewery.website_url,
   updatedAt: brewery.updated_at
