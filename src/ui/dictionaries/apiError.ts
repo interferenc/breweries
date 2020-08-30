@@ -1,6 +1,7 @@
 import { ApiErrorCode } from "@/services/breweryDB/error";
 import { FORBIDDEN, NOT_FOUND } from "http-status-codes";
 import { lookup } from "./lookup";
+import { t } from "../i18n";
 
 export function apiError(code: number): string {
   if (code >= 500 && code <= 599) {
@@ -8,12 +9,12 @@ export function apiError(code: number): string {
   }
 
   const map: Record<number, string> = {
-    [ApiErrorCode.NetworkError]: "Network error",
-    [ApiErrorCode.ParseError]: "Parse error",
-    [ApiErrorCode.DecodeError]: "Decode error",
-    [FORBIDDEN]: "Forbidden",
-    [NOT_FOUND]: "Not found error"
+    [ApiErrorCode.NetworkError]: t("Network error"),
+    [ApiErrorCode.ParseError]: t("Parse error"),
+    [ApiErrorCode.DecodeError]: t("Decode error"),
+    [FORBIDDEN]: t("Forbidden"),
+    [NOT_FOUND]: t("Not found error")
   };
 
-  return lookup<number>(map, code, "Unknown error");
+  return lookup(map, code, t("Unknown error"));
 }

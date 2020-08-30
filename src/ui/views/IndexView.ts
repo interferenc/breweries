@@ -8,6 +8,7 @@ import { Filter, Title, ErrorMessage, Pagination, Box } from "@/ui/components";
 import { RouterLink } from "vue-router";
 import { BreweryList } from "@/entities";
 import { RouteName } from "../router/types";
+import { t } from "../i18n";
 
 const DEFAULT_PAGE = 1;
 
@@ -35,15 +36,15 @@ export const IndexView = defineComponent({
 
     return () =>
       h("div", [
-        h(Title, () => "Breweries"),
+        h(Title, () => t("Breweries")),
         h("form", { class: "py-4 sm:flex" }, [
           h(Filter, {
-            label: "Name",
+            label: t("Name"),
             value: name.value,
             onInput: (value: string) => updateFilter(() => (name.value = value))
           }),
           h(Filter, {
-            label: "City",
+            label: t("City"),
             value: city.value,
             onInput: (value: string) => updateFilter(() => (city.value = value))
           })
@@ -56,7 +57,7 @@ export const IndexView = defineComponent({
                 h(
                   "thead",
                   { class: "text-left border-b-2 border-gray-400" },
-                  h("tr", [h("th", "Name"), h("th", "City")])
+                  h("tr", [h("th", t("Name")), h("th", t("City"))])
                 ),
                 h(
                   "tbody",

@@ -7,7 +7,7 @@ import * as option from "@/ui/folds/option";
 import * as ts from "@/ui/folds/taskState";
 import { Brewery, GeographicLocation } from "@/entities";
 import { RouteName } from "../router/types";
-import { useI18n } from "vue-i18n";
+import { t, d } from "../i18n";
 
 export const DetailView = defineComponent({
   props: {
@@ -21,8 +21,6 @@ export const DetailView = defineComponent({
     executeTask();
 
     watch(props, executeTask);
-
-    const { t, d } = useI18n();
 
     return () =>
       h("div", [

@@ -1,6 +1,7 @@
 import { h, defineComponent } from "vue";
 import { RouterLink } from "vue-router";
 import { router } from "../router";
+import { t } from "../i18n";
 
 export const Pagination = defineComponent({
   props: {
@@ -22,7 +23,7 @@ export const Pagination = defineComponent({
                 }
               }
             },
-            () => "Previous page"
+            () => t("Previous page")
           )
         : null,
       h(
@@ -36,7 +37,7 @@ export const Pagination = defineComponent({
             }
           }
         },
-        () => "Next page"
+        () => t("Next page")
       )
     ])
 });

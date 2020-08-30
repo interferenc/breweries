@@ -3,6 +3,7 @@ import { Subtitle } from "./Subtitle";
 import { apiError } from "../dictionaries/apiError";
 import { Button } from "./Button";
 import { ApiError } from "@/services/breweryDB/error";
+import { t } from "../i18n";
 
 export const ErrorMessage = defineComponent({
   props: {
@@ -16,9 +17,9 @@ export const ErrorMessage = defineComponent({
       "div",
       { class: "bg-white border-red-400 border-2 rounded-lg p-4 mb-6" },
       [
-        h(Subtitle, () => "Error"),
+        h(Subtitle, () => t("Error")),
         h("p", { class: "mb-3" }, apiError(props.error.code)),
-        h(Button, { onClick: () => emit("retry") }, () => "Retry")
+        h(Button, { onClick: () => emit("retry") }, () => t("Retry"))
       ]
     )
 });
