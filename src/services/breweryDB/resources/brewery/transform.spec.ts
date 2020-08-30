@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { isLeft, isRight } from "fp-ts/lib/Either";
 import { rawBrewery, transformedBrewery } from "./transform.spec.fixtures";
 import { breweryTransformer } from "./transform";
 

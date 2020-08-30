@@ -2,7 +2,6 @@ import { some } from "fp-ts/lib/Option";
 
 /* eslint-disable @typescript-eslint/camelcase */
 export const rawBrewery = {
-  id: 127,
   name: "Dragoon Brewing Co",
   brewery_type: "micro",
   street: some("1859 W Grant Rd Ste 111"),
