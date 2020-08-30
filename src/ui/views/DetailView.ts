@@ -2,10 +2,9 @@ import { h, defineComponent, watch } from "vue";
 import { get } from "@/services/breweryDB/resources/brewery";
 import { useApiTask } from "../concerns";
 import { RouterLink } from "vue-router";
-import { Box, Subtitle, Title, ErrorMessage, Tag } from "../components";
+import { Box, Subtitle, Title, ErrorMessage, Tag, Map } from "../components";
 import * as option from "@/ui/folds/option";
 import * as ts from "@/ui/folds/taskState";
-import { smallStaticMap } from "@/services/mapbox";
 import { Brewery, GeographicLocation } from "@/entities";
 import { RouteName } from "../router/types";
 
@@ -40,12 +39,7 @@ export const DetailView = defineComponent({
                 option.toLink(result.website)
               ]),
               option.toVNodes((coordinates: GeographicLocation) =>
-                h("img", {
-                  class: "rounded",
-                  style:
-                    "background-color: #ECE7E2; width: 200px; height: 200px;",
-                  src: smallStaticMap(coordinates, 12)
-                })
+                h(Map, { coordinates })
               )(result.coordinates)
             ])
         )(taskState.value),

@@ -3,6 +3,7 @@ export * from "./Button";
 export * from "./ErrorMessage";
 export * from "./Filter";
 export * from "./Loader";
+export * from "./Map";
 export * from "./Navbar";
 export * from "./NavbarItem";
 export * from "./Pagination";
