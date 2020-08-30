@@ -7,6 +7,7 @@ import * as option from "@/ui/folds/option";
 import * as ts from "@/ui/folds/taskState";
 import { Brewery, GeographicLocation } from "@/entities";
 import { RouteName } from "../router/types";
+import { useI18n } from "vue-i18n";
 
 export const DetailView = defineComponent({
   props: {
@@ -21,6 +22,8 @@ export const DetailView = defineComponent({
 
     watch(props, executeTask);
 
+    const { t, d } = useI18n();
+
     return () =>
       h("div", [
         ts.toVNodePending(
@@ -33,17 +36,21 @@ export const DetailView = defineComponent({
                 option.toParagraph(result.address.city),
                 option.toParagraph(result.address.state),
                 option.toParagraph(result.address.country),
-                option.toVNodes((value: string) => h("p", `Phone: ${value}`))(
-                  result.phone
-                ),
-                option.toLink(result.website)
+                option.toVNodes((value: string) =>
+                  h("p", t("Phone: {value}", { value }))
+                )(result.phone),
+                option.toLink(result.website),
+                h(
+                  "p",
+                  t("Last updated at: {date}", { date: d(result.updatedAt) })
+                )
               ]),
               option.toVNodes((coordinates: GeographicLocation) =>
                 h(Map, { coordinates })
               )(result.coordinates)
             ])
         )(taskState.value),
-        h(Subtitle, () => "Featured breweries"),
+        h(Subtitle, () => t("Featured breweries")),
         h("ul", { class: "list-disc pl-6" }, [
           h(
             "li",
