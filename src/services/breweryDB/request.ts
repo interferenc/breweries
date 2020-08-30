@@ -1,34 +1,18 @@
 import { flow } from "fp-ts/lib/function";
+import { getRequest } from "@/services/http";
+import { setBaseHeaders, setAuthorizationHeaders } from "./header";
 
-import { setQuery } from "./query";
-import {
-  createGetRequest as getRequestFactory,
-  RequestFactory
-} from "@/services/http";
+/**
+ * Creates a GET request to the brewery DB
+ * @param url URL of the resource
+ */
+export const apiGetRequest = flow(getRequest, setBaseHeaders);
 
-const setHeaders = (headers: Headers, toSet: string[][]): string[][] => [
-  ...headers.entries(),
-  ...toSet
-];
-
-const addBaseHeaders = (req: Request) =>
-  new Request(req, {
-    headers: setHeaders(req.headers, [
-      ["Content-Type", "application/json"],
-      ["Accept", "application/json"]
-    ])
-  });
-
-const addAuthorizationHeaders = (req: Request) =>
-  new Request(req, {
-    headers: setHeaders(req.headers, [["Authorization", "Bearer token"]])
-  });
-
-/*const baseHeaders = (factory: RequestFactory) => flow(factory, addBaseHeaders);*/
-
-export const createGetRequest = flow(getRequestFactory, addBaseHeaders);
-
-export const createAuthorizedGetRequest = flow(
-  createGetRequest,
-  addAuthorizationHeaders
+/**
+ * Creates an authenticated GET request to the brewery DB with the `Authorization` header set.
+ * @param url URL of the resource
+ */
+export const authorizedApiGetRequest = flow(
+  getRequest,
+  setAuthorizationHeaders
 );

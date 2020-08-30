@@ -1,33 +1,21 @@
-import { pipe } from "fp-ts/lib/pipeable";
-
-export interface ApiQuery {
-  [name: string]: string;
-}
-
-const stringifyQuery = (query: ApiQuery) =>
-  new URLSearchParams(query).toString();
-
-const setQueryString = (request: Request) => (queryString: string) => {
-  const url = new URL(request.url);
-  url.search = queryString;
-  return url;
-};
-
-export const setQuery = (query: ApiQuery) => (request: Request) =>
-  pipe(
-    query,
-    stringifyQuery,
-    setQueryString(request),
-    url => new Request(url.toString(), request)
-    /*new Request(url, {
-        method: request.method,
-        body: request.body,
-        headers: request.headers
-      })*/
-  );
-
-export interface QueryValueEncoder<T> {
+/**
+ * An interface representing a function that can encode an arbitrary data type to a query string value for the brewery
+ * DB API
+ */
+interface QueryValueEncoder<T> {
   (data: T): string;
 }
+
+/**
+ * Encodes a string to be used as query string value for the brewery DB API
+ * @param i the value to encode
+ */
 export const string: QueryValueEncoder<string> = i => i;
+
+/**
+ * Encodes a number to be used as query string value for the brewery DB API
+ * @param i the value to encode
+ */
 export const number: QueryValueEncoder<number> = (i: number) => i.toString();
+
+export { Query, setQuery } from "@/services/http";

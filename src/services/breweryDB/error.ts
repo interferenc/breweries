@@ -1,3 +1,9 @@
+/**
+ * Represents a brewery API error
+ * @class
+ *
+ * @param code The HTTP status code of the error
+ */
 export class ApiError {
   public code: number;
 
@@ -6,6 +12,9 @@ export class ApiError {
   }
 }
 
+/**
+ * Custom error codes for the brewery DB API
+ */
 export const enum ApiErrorCode {
   NetworkError = 10,
   ParseError = 20,

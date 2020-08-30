@@ -3,14 +3,16 @@ import { chain, map } from "fp-ts/lib/TaskEither";
 import { pipe, flow } from "fp-ts/lib/function";
 import { breweryCodec, breweryListCodec } from "./codec";
 import { breweryListTransformer, breweryTransformer } from "./transform";
+import {
+  authorizedApiGetRequest,
+  setQuery,
+  Query,
+  execute,
+  decode
+} from "@/services/breweryDB";
 
-import { createAuthorizedGetRequest } from "@/services/breweryDB/request";
-import { setQuery, ApiQuery } from "@/services/breweryDB/query";
-import { executeRequest } from "@/services/breweryDB/action";
-import { decode } from "@/services/breweryDB/decoder";
-
-const baseUrl = "https://api.openbrewerydb.org/breweries";
-const recordUrl = (id: number): string => `${baseUrl}/${id}`;
+const BASE_URL = "https://api.openbrewerydb.org/breweries";
+const recordUrl = (id: number): string => `${BASE_URL}/${id}`;
 
 interface BreweryListQuery {
   city: string;
@@ -18,7 +20,7 @@ interface BreweryListQuery {
   page: number;
 }
 
-const encodeBreweryListQuery = (query: BreweryListQuery): ApiQuery => ({
+const encodeBreweryListQuery = (query: BreweryListQuery): Query => ({
   by_city: query.city,
   by_name: query.name,
   page: query.page.toString()
@@ -26,18 +28,18 @@ const encodeBreweryListQuery = (query: BreweryListQuery): ApiQuery => ({
 
 export const getList = (query: BreweryListQuery) =>
   pipe(
-    baseUrl,
-    createAuthorizedGetRequest,
+    BASE_URL,
+    authorizedApiGetRequest,
     setQuery(encodeBreweryListQuery(query)),
-    executeRequest,
+    execute,
     chain(decode(breweryListCodec)),
     map(breweryListTransformer)
   );
 
 export const get = flow(
   recordUrl,
-  createAuthorizedGetRequest,
-  executeRequest,
+  authorizedApiGetRequest,
+  execute,
   chain(decode(breweryCodec)),
   map(breweryTransformer)
 );
