@@ -1,6 +1,7 @@
 import { h, defineComponent, watch } from "vue";
 import { getList } from "@/services/resources/brewery/actions";
 import * as qs from "@/ui/queryState";
+import * as fold from "@/ui/folds";
 import { useApiTask, foldTaskState } from "../concerns";
 import {
   Filter,
@@ -11,13 +12,12 @@ import {
   Box
 } from "@/ui/components";
 import { RouterLink } from "vue-router";
-import { foldString } from "../helpers";
 
 export const IndexView = defineComponent({
-  setup(_, ctx) {
-    const page = qs.number("page", 1, ctx);
-    const city = qs.string("city", "", ctx);
-    const name = qs.string("name", "", ctx);
+  setup() {
+    const page = qs.number("page", 1);
+    const city = qs.string("city");
+    const name = qs.string("name");
 
     const { executeTask, taskState } = useApiTask(() =>
       getList({
@@ -71,7 +71,7 @@ export const IndexView = defineComponent({
                           () => brewery.name
                         )
                       ),
-                      h("td", foldString(brewery.address.city))
+                      h("td", fold.toString(brewery.address.city))
                     ])
                   )
                 )

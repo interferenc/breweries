@@ -1,5 +1,6 @@
 import { h, defineComponent } from "vue";
 import { RouterLink } from "vue-router";
+import { router } from "../router";
 
 export const Pagination = defineComponent({
   props: {
@@ -13,7 +14,14 @@ export const Pagination = defineComponent({
       props.page > 1
         ? h(
             RouterLink,
-            { to: { query: { page: props.page - 1 } } },
+            {
+              to: {
+                query: {
+                  ...router.currentRoute.value.query,
+                  page: props.page - 1
+                }
+              }
+            },
             () => "Previous page"
           )
         : null,
@@ -21,7 +29,12 @@ export const Pagination = defineComponent({
         RouterLink,
         {
           class: "ml-auto",
-          to: { query: { page: props.page + 1 } }
+          to: {
+            query: {
+              ...router.currentRoute.value.query,
+              page: props.page + 1
+            }
+          }
         },
         () => "Next page"
       )

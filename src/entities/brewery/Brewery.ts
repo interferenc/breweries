@@ -1,9 +1,5 @@
 import { Option } from "fp-ts/lib/Option";
-
-export interface GeographicLocation {
-  longitude: number;
-  latitude: number;
-}
+import { GeographicLocation } from "../geographicLocation/GeographicLocation";
 
 export interface Brewery {
   name: string;

@@ -1,7 +1,5 @@
 import { ApiError } from "@/services/breweryDB/error";
-import { VNode, VNodeArrayChildren } from "vue";
-
-export type VNodes = null | string | VNode | VNodeArrayChildren;
+import { VNodes } from "@/ui/types";
 
 // This is the state of the async operation, represented with a
 // discriminated union. This way it is impossible to set an

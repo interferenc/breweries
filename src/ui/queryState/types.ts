@@ -4,29 +4,20 @@ import {
   numberEncoder,
   numberDecoder
 } from "@/ui/router/query";
-import { SetupContext } from "vue";
 import { queryState } from "./queryState";
 
-export const number = (key: string, fallback: number, context: SetupContext) =>
+export const number = (key: string, fallback = 0) =>
   queryState<number>(
     key,
     numberEncoder,
     numberDecoder,
-    numberEncoder(fallback),
-    context
+    numberEncoder(fallback)
   );
 
-export const string = (
-  key: string,
-  fallback: string,
-  context: SetupContext,
-  debounce = true
-) =>
+export const string = (key: string, fallback = "") =>
   queryState<string>(
     key,
     stringEncoder,
     stringDecoder,
-    stringEncoder(fallback),
-    context,
-    debounce
+    stringEncoder(fallback)
   );

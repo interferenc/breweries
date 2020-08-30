@@ -1,11 +1,11 @@
-import { h, defineComponent, watch, VNode } from "vue";
+import { h, defineComponent, watch } from "vue";
 import { get } from "@/services/resources/brewery/actions";
 import { useApiTask, foldTaskState } from "../concerns";
 import { RouterLink } from "vue-router";
 import { Box, Subtitle, Title, ErrorMessage, Loader, Tag } from "../components";
-import { foldString } from "../helpers";
-import { fold as foldOption } from "fp-ts/lib/Option";
-import { GeographicLocation } from "@/entities/brewery/Brewery";
+import * as fold from "@/ui/folds";
+import { smallStaticMap } from "@/services/mapbox";
+import { GeographicLocation } from "@/entities/geographicLocation/GeographicLocation";
 
 export const DetailView = defineComponent({
   props: {
@@ -30,30 +30,22 @@ export const DetailView = defineComponent({
             h(Box, { class: "flex" }, () => [
               h("div", { class: "flex-1" }, [
                 h(Title, () => [result.name, h(Tag, () => result.type)]),
-                h("p", foldString(result.address.street)),
-                h(
-                  "p",
-                  `${foldString(result.address.city)}, ${foldString(
-                    result.address.state
-                  )}`
+                fold.toParagraph(result.address.street),
+                fold.toParagraph(result.address.city),
+                fold.toParagraph(result.address.state),
+                fold.toParagraph(result.address.country),
+                fold.toVNodes((value: string) => h("p", `Phone: ${value}`))(
+                  result.phone
                 ),
-                h("p", foldString(result.address.country)),
-                h("p", `Phone: ${foldString(result.phone)}`),
-                foldOption<string, VNode | null>(
-                  () => null,
-                  website => h("a", { href: website }, website)
-                )(result.website)
+                fold.toLink(result.website)
               ]),
-
-              foldOption<GeographicLocation, VNode | null>(
-                () => null,
-                ({ latitude, longitude }) =>
-                  h("img", {
-                    class: "rounded",
-                    style:
-                      "background-color: #ECE7E2; width: 200px; height: 200px;",
-                    src: `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${longitude},${latitude},12,0/200x200?access_token=pk.eyJ1IjoiaW50ZXJmZWNvIiwiYSI6ImNrZWZxeHoxMzBzejgzNnQ1N2U1djlvc3kifQ.4FBmQ_sbClfeyMKuunHx1g`
-                  })
+              fold.toVNodes((coordinates: GeographicLocation) =>
+                h("img", {
+                  class: "rounded",
+                  style:
+                    "background-color: #ECE7E2; width: 200px; height: 200px;",
+                  src: smallStaticMap(coordinates, 12)
+                })
               )(result.coordinates)
             ])
         }),
