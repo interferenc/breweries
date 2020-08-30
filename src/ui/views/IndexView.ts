@@ -1,17 +1,19 @@
 import { h, defineComponent, watch } from "vue";
-import { getList } from "@/services/resources/brewery/actions";
+import { getList } from "@/services/breweryDB/resources/brewery";
 import * as qs from "@/ui/queryState";
 import * as option from "@/ui/folds/option";
 import * as ts from "@/ui/folds/taskState";
 import { useApiTask } from "../concerns";
 import { Filter, Title, ErrorMessage, Pagination, Box } from "@/ui/components";
 import { RouterLink } from "vue-router";
-import { BreweryList } from "@/entities/brewery/Brewery";
+import { BreweryList } from "@/entities";
 import { RouteName } from "../router/types";
+
+const DEFAULT_PAGE = 1;
 
 export const IndexView = defineComponent({
   setup() {
-    const page = qs.number("page", 1);
+    const page = qs.number("page", DEFAULT_PAGE);
     const city = qs.string("city");
     const name = qs.string("name");
 
@@ -26,6 +28,11 @@ export const IndexView = defineComponent({
 
     watch([page, city, name], executeTask);
 
+    const updateFilter = (mutation: Function) => {
+      mutation();
+      page.value = DEFAULT_PAGE;
+    };
+
     return () =>
       h("div", [
         h(Title, () => "Breweries"),
@@ -33,12 +40,12 @@ export const IndexView = defineComponent({
           h(Filter, {
             label: "Name",
             value: name.value,
-            onInput: (value: string) => (name.value = value)
+            onInput: (value: string) => updateFilter(() => (name.value = value))
           }),
           h(Filter, {
             label: "City",
             value: city.value,
-            onInput: (value: string) => (city.value = value)
+            onInput: (value: string) => updateFilter(() => (city.value = value))
           })
         ]),
         ts.toVNodePending(

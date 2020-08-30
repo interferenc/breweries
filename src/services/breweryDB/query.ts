@@ -10,7 +10,6 @@ const stringifyQuery = (query: ApiQuery) =>
 const setQueryString = (request: Request) => (queryString: string) => {
   const url = new URL(request.url);
   url.search = queryString;
-  console.log(url);
   return url;
 };
 

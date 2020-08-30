@@ -1,4 +1,4 @@
-import { GeographicLocation } from "@/entities/geographicLocation/GeographicLocation";
+import { GeographicLocation } from "@/entities";
 
 const TOKEN =
   "pk.eyJ1IjoiaW50ZXJmZWNvIiwiYSI6ImNrZWZxeHoxMzBzejgzNnQ1N2U1djlvc3kifQ.4FBmQ_sbClfeyMKuunHx1g";

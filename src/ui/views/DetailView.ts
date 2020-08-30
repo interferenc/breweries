@@ -1,13 +1,12 @@
 import { h, defineComponent, watch } from "vue";
-import { get } from "@/services/resources/brewery/actions";
+import { get } from "@/services/breweryDB/resources/brewery";
 import { useApiTask } from "../concerns";
 import { RouterLink } from "vue-router";
 import { Box, Subtitle, Title, ErrorMessage, Tag } from "../components";
 import * as option from "@/ui/folds/option";
 import * as ts from "@/ui/folds/taskState";
 import { smallStaticMap } from "@/services/mapbox";
-import { GeographicLocation } from "@/entities/geographicLocation/GeographicLocation";
-import { Brewery } from "@/entities/brewery/Brewery";
+import { Brewery, GeographicLocation } from "@/entities";
 import { RouteName } from "../router/types";
 
 export const DetailView = defineComponent({

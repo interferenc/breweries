@@ -1,10 +1,6 @@
 import * as t from "io-ts";
 import { breweryCodec, breweryRecordCodec, breweryListCodec } from "./codec";
-import {
-  Brewery,
-  BreweryRecord,
-  BreweryList
-} from "@/entities/brewery/Brewery";
+import { Brewery, BreweryRecord, BreweryList } from "@/entities";
 import { isSome, some, none, getOrElse } from "fp-ts/lib/Option";
 
 export const breweryTransformer = (
