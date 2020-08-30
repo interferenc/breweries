@@ -1,8 +1,18 @@
-// Global store for all async operations identified by a string key.
-// Each run gets a random value and sets that value for the key.
-// When the operation is done, before executing the mutation,
-// we check if the current run is the last run, in which case
-// the value will still be the same. If it is not the same, some other
-// run of the same process started in the meantime, and the results
-// for this run are ignored.
+import { v4 as uuidv4 } from "uuid";
+
 export const apiTaskRepository: Record<string, string> = {};
+
+export const generateTaskKey = uuidv4;
+export const generateExecutionKey = uuidv4;
+
+export const get = (taskKey: string) => apiTaskRepository[taskKey];
+
+export const check = (taskKey: string, executionKey: string) =>
+  apiTaskRepository[taskKey] === executionKey;
+
+export const set = (taskKey: string, executionKey: string) =>
+  (apiTaskRepository[taskKey] = executionKey);
+
+export const unset = (taskKey: string): void => {
+  delete apiTaskRepository[taskKey];
+};

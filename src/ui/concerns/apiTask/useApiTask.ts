@@ -1,76 +1,53 @@
-import { v4 as uuidv4 } from "uuid";
-import * as TE from "fp-ts/lib/TaskEither";
-import * as T from "fp-ts/lib/Task";
+import { TaskEither, fold } from "fp-ts/lib/TaskEither";
+import { task } from "fp-ts/lib/Task";
 import { pipe } from "fp-ts/lib/pipeable";
 import { ApiError } from "@/services/breweryDB/error";
 import { ref, UnwrapRef } from "vue";
 import { ApiTask } from "./apiTask";
 import { ApiTaskState } from "./ApiTaskState";
 import { Lazy } from "fp-ts/lib/function";
-import { apiTaskRepository } from "./apiTaskRepository";
+import {
+  generateTaskKey,
+  generateExecutionKey,
+  set,
+  check,
+  unset
+} from "./apiTaskRepository";
+
+type LazyTask<T> = Lazy<TaskEither<ApiError, T>>;
 
 export function useApiTask<T>(
-  lazyTask: Lazy<TE.TaskEither<ApiError, T>>,
-  key = uuidv4()
+  lazyTask: LazyTask<T>,
+  taskKey = generateTaskKey()
 ): ApiTask<T> {
   const taskState = ref<ApiTaskState<T>>({ pending: false });
 
   const executeTask = () => {
+    const executionKey = generateExecutionKey();
+    set(taskKey, executionKey);
+
     taskState.value = { pending: true };
 
-    // generate random kay and store it for this async operation identified by 'key'
-    const id = uuidv4();
-    apiTaskRepository[key] = id;
+    const onLeft = (error: ApiError) =>
+      task.fromIO(() => {
+        if (check(taskKey, executionKey)) {
+          taskState.value = { pending: false, error };
+          unset(taskKey);
+        }
+      });
 
-    pipe(
-      lazyTask(),
-      TE.fold(
-        error =>
-          T.task.fromIO(() => {
-            if (apiTaskRepository[key] === id) {
-              console.log(
-                "last fetch, returning error",
-                key,
-                apiTaskRepository[key],
-                id
-              );
-              console.log(error);
-              taskState.value = { pending: false, error };
-              delete apiTaskRepository[key];
-            } else {
-              console.log(
-                "not last fetch, ignoring error",
-                key,
-                apiTaskRepository[key],
-                id
-              );
-            }
-          }),
-        result =>
-          T.task.fromIO(() => {
-            if (apiTaskRepository[key] === id) {
-              console.log(
-                "last fetch, executing mutation",
-                key,
-                apiTaskRepository[key],
-                id
-              );
-              taskState.value = {
-                pending: false,
-                result: result as UnwrapRef<T>
-              };
-              delete apiTaskRepository[key];
-            } else {
-              console.log(
-                "not last fetch, ignoring mutation",
-                key,
-                apiTaskRepository[key],
-                id
-              );
-            }
-          })
-      )
-    )();
+    const onRight = (result: T) =>
+      task.fromIO(() => {
+        if (check(taskKey, executionKey)) {
+          taskState.value = {
+            pending: false,
+            result: result as UnwrapRef<T>
+          };
+          unset(taskKey);
+        }
+      });
+
+    pipe(lazyTask(), fold(onLeft, onRight))();
   };
 
   return { executeTask, taskState };

@@ -1,17 +1,13 @@
 import { h, defineComponent, watch } from "vue";
 import { getList } from "@/services/resources/brewery/actions";
 import * as qs from "@/ui/queryState";
-import * as fold from "@/ui/folds";
-import { useApiTask, foldTaskState } from "../concerns";
-import {
-  Filter,
-  Title,
-  ErrorMessage,
-  Pagination,
-  Loader,
-  Box
-} from "@/ui/components";
+import * as option from "@/ui/folds/option";
+import * as ts from "@/ui/folds/taskState";
+import { useApiTask } from "../concerns";
+import { Filter, Title, ErrorMessage, Pagination, Box } from "@/ui/components";
 import { RouterLink } from "vue-router";
+import { BreweryList } from "@/entities/brewery/Brewery";
+import { RouteName } from "../router/types";
 
 export const IndexView = defineComponent({
   setup() {
@@ -45,11 +41,9 @@ export const IndexView = defineComponent({
             onInput: (value: string) => (city.value = value)
           })
         ]),
-        foldTaskState(taskState.value, {
-          initial: () => null,
-          pending: () => h(Loader),
-          error: ({ code }) => h(ErrorMessage, { code, onRetry: executeTask }),
-          result: result =>
+        ts.toVNodePending(
+          error => h(ErrorMessage, { error, onRetry: executeTask }),
+          (result: BreweryList) =>
             h(Box, () =>
               h("table", { class: "w-full -my-3" }, [
                 h(
@@ -66,18 +60,21 @@ export const IndexView = defineComponent({
                         h(
                           RouterLink,
                           {
-                            to: { name: "detail", params: { id: brewery.id } }
+                            to: {
+                              name: RouteName.Detail,
+                              params: { id: brewery.id }
+                            }
                           },
                           () => brewery.name
                         )
                       ),
-                      h("td", fold.toString(brewery.address.city))
+                      h("td", option.toString(brewery.address.city))
                     ])
                   )
                 )
               ])
             )
-        }),
+        )(taskState.value),
         h(Pagination, { page: page.value })
       ]);
   }

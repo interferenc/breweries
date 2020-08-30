@@ -1,6 +1,6 @@
 import { ApiErrorCode } from "@/services/breweryDB/error";
 import { FORBIDDEN, NOT_FOUND } from "http-status-codes";
-import { getMappedRecord } from "../helpers";
+import { lookup } from "./lookup";
 
 export function apiError(code: number): string {
   if (code >= 500 && code <= 599) {
@@ -15,5 +15,5 @@ export function apiError(code: number): string {
     [NOT_FOUND]: "Not found error"
   };
 
-  return getMappedRecord<number>(map, code, "Unknown error");
+  return lookup<number>(map, code, "Unknown error");
 }

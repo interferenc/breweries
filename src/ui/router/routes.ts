@@ -5,6 +5,7 @@ import { IndexView } from "@/ui/views/IndexView";
 import { EmptyLayout } from "../layouts/EmptyLayout";
 import { NavbarLayout } from "../layouts/NavbarLayout";
 import { AboutView } from "../views/AboutView";
+import { RouteName } from "./types";
 
 const idFromRoute = (route: RouteLocationNormalized) => ({
   id: parseInt(route.params.id as string, 10)
@@ -17,7 +18,7 @@ export const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "",
-        name: "home",
+        name: RouteName.Home,
         component: HomeView
       }
     ]
@@ -27,19 +28,19 @@ export const routes: Array<RouteRecordRaw> = [
     component: NavbarLayout,
     children: [
       {
-        path: "/breweries",
-        name: "index",
+        path: "breweries",
+        name: RouteName.Index,
         component: IndexView
       },
       {
-        path: "/breweries/:id",
-        name: "detail",
+        path: "breweries/:id",
+        name: RouteName.Detail,
         component: DetailView,
         props: idFromRoute
       },
       {
-        path: "/about",
-        name: "about",
+        path: "about",
+        name: RouteName.About,
         component: AboutView
       }
     ]
