@@ -2,7 +2,7 @@ import { Ref } from "vue";
 import { ApiTaskState } from "./ApiTaskState";
 
 /**
- * Represents an async task and its state.
+ * Represents an ApiTask and its state.
  */
 export interface ApiTask<T> {
   executeTask: () => void;
