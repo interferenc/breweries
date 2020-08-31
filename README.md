@@ -22,15 +22,25 @@ The implemented layers are:
 2. Services
 3. User Interface
 
-The most important guiding principle is that _no component in any of the layers should depend anything in a higher layer._
+The most important guiding principle is that _no component in any of the layers should depend on anything in a higher layer._
 
 ### Entities
 
-[Entities](src/entities) are all "things" the application works with: fetches them, create them, save them. All business rules about these entities should also be part of this layer, like validations, mutations and transformations.
+[Entities](src/entities) are all "things" the application works with: fetches them, creates them, saves them.
+
+All business rules about these entities should also be part of this layer, like:
+
+- validations
+- mutations
+- transformations
 
 ### Services
 
-[Services](src/services) can depend on entities and other serves only. They are responsible of moving data to and from the application.
+[Services](src/services) can depend on entities and other services only. They are responsible for moving data to and from the application, as well enforcing related business rules, like:
+
+- packing and unpacking all incoming and outgoing data
+- validating contracts: making sure the incoming data is what was promised
+- handling transport errors: making sure a temporary network error does not break the application
 
 ### User Interface
 
