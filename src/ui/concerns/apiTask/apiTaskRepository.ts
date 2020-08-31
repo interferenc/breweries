@@ -6,42 +6,40 @@ import { v4 as uuidv4 } from "uuid";
 const repository: Record<string, string> = {};
 
 /**
- * Generates a task key
- */
-export const generateTaskKey = uuidv4;
-
-/**
- * Generates an execution key
- */
-export const generateExecutionKey = uuidv4;
-
-/**
- * Gets a value from the ApiTaskRepository
- * @param taskKey the taskKey for the task
- */
-export const get = (taskKey: string) => repository[taskKey];
-
-/**
- * Checks if the provided executionKey is last one for the taskKey
+ * only executes the mutator function if the current execution is the last execution
  *
  * @param taskKey key of the task
  * @param executionKey kay of the execution
  */
-export const check = (taskKey: string, executionKey: string) =>
-  repository[taskKey] === executionKey;
+const updateState = (taskKey: string, executionKey: string) => (
+  mutation: Function
+) => () => {
+  if (repository[taskKey] === executionKey) {
+    mutation();
+    delete repository[taskKey];
+  }
+};
 
 /**
  * Sets an executionKey for a given taskKey
  * @param taskKey
  * @param executionKey
+ * @returns an `updateState` function
  */
-export const set = (taskKey: string, executionKey: string) =>
-  (repository[taskKey] = executionKey);
+export const start = () => {
+  /**
+   * Generate keys
+   */
+  const taskKey = uuidv4();
+  const executionKey = uuidv4();
 
-/**
- * Unset a taskKey
- * @param taskKey the taskKey to unset
- */
-export const unset = (taskKey: string): void => {
-  delete repository[taskKey];
+  /**
+   * Store execution key for task
+   */
+  repository[taskKey] = executionKey;
+
+  /**
+   * Return updateState function
+   */
+  return updateState(taskKey, executionKey);
 };
