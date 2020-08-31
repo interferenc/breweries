@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
 /**
- * Stores the last executionKey for all taskKeys
+ * Stores the last executionKey for all taskKeys. This is used for deduplication of requests. There is no good way of
+ * cancelling a dispatched request, but we can at least avoid processing the responses for requests we wanted to cancel.
  */
 const repository: Record<string, string> = {};
 
