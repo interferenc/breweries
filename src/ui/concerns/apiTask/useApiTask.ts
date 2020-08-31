@@ -5,7 +5,6 @@ import { ApiError } from "@/services/breweryDB/error";
 import { ref, UnwrapRef } from "vue";
 import { ApiTask } from "./apiTask";
 import { ApiTaskState } from "./ApiTaskState";
-import { Lazy } from "fp-ts/lib/function";
 import {
   generateTaskKey,
   generateExecutionKey,
@@ -13,11 +12,16 @@ import {
   check,
   unset
 } from "./apiTaskRepository";
+import { Lazy } from "fp-ts/lib/function";
 
-type LazyTask<T> = Lazy<TaskEither<ApiError, T>>;
-
+/**
+ * Turns a `TaskEither` into an `execute` function and a `TaskState` object.
+ *
+ * @param taskEither the taskEither to handle
+ * @param taskKey task key to use for request de-duplication
+ */
 export function useApiTask<T>(
-  lazyTask: LazyTask<T>,
+  lazyTaskEither: Lazy<TaskEither<ApiError, T>>,
   taskKey = generateTaskKey()
 ): ApiTask<T> {
   const taskState = ref<ApiTaskState<T>>({ pending: false });
@@ -47,7 +51,7 @@ export function useApiTask<T>(
         }
       });
 
-    pipe(lazyTask(), fold(onLeft, onRight))();
+    pipe(lazyTaskEither(), fold(onLeft, onRight))();
   };
 
   return { executeTask, taskState };

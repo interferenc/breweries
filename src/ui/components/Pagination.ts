@@ -1,7 +1,7 @@
 import { h, defineComponent } from "vue";
 import { RouterLink } from "vue-router";
 import { router } from "../router";
-import { t } from "../i18n";
+import { useI18n } from "vue-i18n";
 
 export const Pagination = defineComponent({
   props: {
@@ -10,8 +10,9 @@ export const Pagination = defineComponent({
       required: true
     }
   },
-  setup: props => () =>
-    h("div", { class: "flex" }, [
+  setup: props => () => {
+    const { t } = useI18n();
+    return h("div", { class: "flex" }, [
       props.page > 1
         ? h(
             RouterLink,
@@ -39,5 +40,6 @@ export const Pagination = defineComponent({
         },
         () => t("Next page")
       )
-    ])
+    ]);
+  }
 });

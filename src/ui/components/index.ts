@@ -1,6 +1,8 @@
 export * from "./Box";
+export * from "./BreweryTable";
 export * from "./Button";
 export * from "./ErrorMessage";
+export * from "./FeaturedBreweries";
 export * from "./Filter";
 export * from "./Loader";
 export * from "./Map";
@@ -8,5 +10,6 @@ export * from "./Navbar";
 export * from "./NavbarItem";
 export * from "./Pagination";
 export * from "./Subtitle";
+export * from "./Table";
 export * from "./Tag";
 export * from "./Title";

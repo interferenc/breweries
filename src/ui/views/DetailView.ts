@@ -2,12 +2,20 @@ import { h, defineComponent, watch } from "vue";
 import { get } from "@/services/breweryDB/resources/brewery";
 import { useApiTask } from "../concerns";
 import { RouterLink } from "vue-router";
-import { Box, Subtitle, Title, ErrorMessage, Tag, Map } from "../components";
+import {
+  Box,
+  Subtitle,
+  Title,
+  ErrorMessage,
+  Tag,
+  Map,
+  FeaturedBreweries
+} from "../components";
 import * as option from "@/ui/folds/option";
 import * as ts from "@/ui/folds/taskState";
 import { Brewery, GeographicLocation } from "@/entities";
 import { RouteName } from "../router/types";
-import { t, d } from "../i18n";
+import { useI18n } from "vue-i18n";
 
 export const DetailView = defineComponent({
   props: {
@@ -17,11 +25,26 @@ export const DetailView = defineComponent({
     }
   },
   setup(props) {
+    const { t, d } = useI18n();
+
+    /**
+     * Create ApiTask that fetches a gives brewery's data based on its ID.
+     * Since we need this data right away, it executes the task immediately as well.
+     */
     const { executeTask, taskState } = useApiTask(() => get(props.id));
     executeTask();
 
+    /**
+     * Execute the data fetch ApiTask on any props change. This way, any ID change in the url (for example a going back
+     * from one brewery's page to another using the back button, or clicking on a featured brewery link) will trigger
+     * the fetch ApiTask again.
+     */
+    watch(props, () => console.log(JSON.stringify(props)));
     watch(props, executeTask);
 
+    /**
+     * Renders the view
+     */
     return () =>
       h("div", [
         ts.toVNodePending(
@@ -48,33 +71,13 @@ export const DetailView = defineComponent({
               )(result.coordinates)
             ])
         )(taskState.value),
-        h(Subtitle, () => t("Featured breweries")),
-        h("ul", { class: "list-disc pl-6" }, [
-          h(
-            "li",
-            h(
-              RouterLink,
-              { to: { name: RouteName.Detail, params: { id: 832 } } },
-              () => "Morgan Territory Brewing"
-            )
-          ),
-          h(
-            "li",
-            h(
-              RouterLink,
-              { to: { name: RouteName.Detail, params: { id: 833 } } },
-              () => "Mother Earth Brew Co LLC"
-            )
-          ),
-          h(
-            "li",
-            h(
-              RouterLink,
-              { to: { name: RouteName.Detail, params: { id: "no-such-id" } } },
-              () => "Non-existing Brewery (this will be 404)"
-            )
-          )
-        ])
+        h(FeaturedBreweries, {
+          breweries: [
+            { name: "Morgan Territory Brewing", id: 832 },
+            { name: "Mother Earth Brew Co LLC", id: 833 },
+            { name: "Non-existing Brewery (this will be 404)", id: 0 }
+          ]
+        })
       ]);
   }
 });

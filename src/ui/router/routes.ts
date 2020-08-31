@@ -1,17 +1,15 @@
 import { RouteRecordRaw, RouteLocationNormalized } from "vue-router";
-import { HomeView } from "@/ui/views/HomeView";
-import { DetailView } from "@/ui/views/DetailView";
-import { IndexView } from "@/ui/views/IndexView";
-import { EmptyLayout } from "../layouts/EmptyLayout";
-import { NavbarLayout } from "../layouts/NavbarLayout";
-import { AboutView } from "../views/AboutView";
+import { HomeView, IndexView, DetailView, AboutView } from "@/ui/views";
+import { EmptyLayout, NavbarLayout } from "@/ui/layouts";
+
 import { RouteName } from "./types";
+import { numberDecoder } from "./query";
 
 const idFromRoute = (route: RouteLocationNormalized) => ({
-  id: parseInt(route.params.id as string, 10)
+  id: numberDecoder(route.params.id as string)
 });
 
-export const routes: Array<RouteRecordRaw> = [
+export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     component: EmptyLayout,

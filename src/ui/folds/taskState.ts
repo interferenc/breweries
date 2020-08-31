@@ -11,6 +11,14 @@ type OnResult<T> = (result: T) => VNodes;
 const emptyVNode = () => null;
 const loader = () => h(Loader);
 
+/**
+ * Folds a `TaskState` object into VNodes
+ *
+ * @param onInitial initial state
+ * @param onPending pending state
+ * @param onError error state, takes the error as parameter
+ * @param onResult success state, takes the result as parameter
+ */
 export const toVNode = <T>(
   onInitial: constantVNodes,
   onPending: constantVNodes,
@@ -23,5 +31,10 @@ export const toVNode = <T>(
   return onInitial();
 };
 
+/**
+ * Folds a `TaskState` object into VNodes with a default loader and empty initial state
+ * @param onError error state, takes the error as parameter
+ * @param onResult success state, takes the result as parameter
+ */
 export const toVNodePending = <T>(onError: OnError, onResult: OnResult<T>) =>
   toVNode(emptyVNode, loader, onError, onResult);

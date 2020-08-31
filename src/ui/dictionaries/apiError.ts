@@ -1,9 +1,15 @@
 import { ApiErrorCode } from "@/services/breweryDB/error";
 import { FORBIDDEN, NOT_FOUND } from "http-status-codes";
 import { lookup } from "./lookup";
-import { t } from "../i18n";
+import { useI18n } from "vue-i18n";
 
+/**
+ * Turn an ApiError code to human readable format
+ * @param code the error code
+ */
 export function apiError(code: number): string {
+  const { t } = useI18n();
+
   if (code >= 500 && code <= 599) {
     return "Server error";
   }

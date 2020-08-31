@@ -1,8 +1,8 @@
 import { ApiError } from "@/services/breweryDB/error";
 
-// This is the state of the async operation, represented with a
-// discriminated union. This way it is impossible to set an
-// invalid state.
+/**
+ * The state of the async task represented with a discrimated union, making it umpossible to set an invalid state.
+ */
 export type ApiTaskState<T> =
   | { pending: false }
   | { pending: true }
