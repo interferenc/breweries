@@ -84,9 +84,9 @@ export const IndexView = defineComponent({
 
         /**
          * Results table and pagination
-         * The `ts.toVNodePending` folds any taskState into renderable VNodes.
+         * The `ts.toVNodesPending` folds any taskState into renderable VNodes.
          */
-        ts.toVNodePending(
+        ts.toVNodesPending(
           error => h(ErrorMessage, { error, onRetry: executeTask }),
           (list: BreweryList) => h(Box, () => h(BreweryTable, { list }))
         )(taskState.value),

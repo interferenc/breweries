@@ -1,10 +1,8 @@
 import { h, defineComponent, watch } from "vue";
 import { get } from "@/services/breweryDB/resources/brewery";
 import { useApiTask } from "../concerns";
-import { RouterLink } from "vue-router";
 import {
   Box,
-  Subtitle,
   Title,
   ErrorMessage,
   Tag,
@@ -14,7 +12,6 @@ import {
 import * as option from "@/ui/folds/option";
 import * as ts from "@/ui/folds/taskState";
 import { Brewery, GeographicLocation } from "@/entities";
-import { RouteName } from "../router/types";
 import { useI18n } from "vue-i18n";
 
 export const DetailView = defineComponent({
@@ -45,39 +42,66 @@ export const DetailView = defineComponent({
     /**
      * Renders the view
      */
-    return () =>
-      h("div", [
-        ts.toVNodePending(
-          error => h(ErrorMessage, { error, onRetry: executeTask }),
-          (result: Brewery) =>
-            h(Box, { class: "flex" }, () => [
-              h("div", { class: "flex-1" }, [
-                h(Title, () => [result.name, h(Tag, () => result.type)]),
-                option.toParagraph(result.address.street),
-                option.toParagraph(result.address.city),
-                option.toParagraph(result.address.state),
-                option.toParagraph(result.address.country),
-                option.toVNodes((value: string) =>
-                  h("p", t("Phone: {value}", { value }))
-                )(result.phone),
-                option.toLink(result.website),
-                h(
-                  "p",
-                  t("Last updated at: {date}", { date: d(result.updatedAt) })
-                )
-              ]),
-              option.toVNodes((coordinates: GeographicLocation) =>
-                h(Map, { coordinates })
-              )(result.coordinates)
-            ])
-        )(taskState.value),
-        h(FeaturedBreweries, {
-          breweries: [
-            { name: "Morgan Territory Brewing", id: 832 },
-            { name: "Mother Earth Brew Co LLC", id: 833 },
-            { name: "Non-existing Brewery (this will be 404)", id: 0 }
-          ]
-        })
-      ]);
+    return () => [
+      /**
+       * Brewery data box
+       * The `ts.toVNodesPending` folds any taskState into renderable VNodes.
+       */
+      ts.toVNodesPending(
+        error => h(ErrorMessage, { error, onRetry: executeTask }),
+        (result: Brewery) =>
+          h(Box, { class: "flex" }, () => [
+            h("div", { class: "flex-1" }, [
+              /**
+               * Brewery title and type
+               */
+              h(Title, () => [result.name, h(Tag, () => result.type)]),
+
+              /**
+               * Address
+               */
+              option.toParagraph(result.address.street),
+              option.toParagraph(result.address.city),
+              option.toParagraph(result.address.state),
+              option.toParagraph(result.address.country),
+
+              /**
+               * Contact details
+               */
+              option.toVNodes((value: string) =>
+                h("p", t("Phone: {value}", { value }))
+              )(result.phone),
+              option.toLink(result.website),
+
+              /**
+               * Last updated date converted into the client's timezone and localized to the client's locale.
+               */
+              h(
+                "p",
+                { class: "text-xs italic text-gray-500 pt-6" },
+                t("Last updated on {date}.", { date: d(result.updatedAt) })
+              )
+            ]),
+
+            /**
+             * Location map
+             */
+            option.toVNodes((coordinates: GeographicLocation) =>
+              h(Map, { coordinates })
+            )(result.coordinates)
+          ])
+      )(taskState.value),
+
+      /**
+       * Featured breweries llist
+       */
+      h(FeaturedBreweries, {
+        breweries: [
+          { name: "Morgan Territory Brewing", id: 832 },
+          { name: "Mother Earth Brew Co LLC", id: 833 },
+          { name: "Non-existing Brewery (this will be 404)", id: 0 }
+        ]
+      })
+    ];
   }
 });

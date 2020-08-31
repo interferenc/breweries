@@ -19,7 +19,7 @@ const loader = () => h(Loader);
  * @param onError error state, takes the error as parameter
  * @param onResult success state, takes the result as parameter
  */
-export const toVNode = <T>(
+export const toVNodes = <T>(
   onInitial: constantVNodes,
   onPending: constantVNodes,
   onError: OnError,
@@ -36,5 +36,5 @@ export const toVNode = <T>(
  * @param onError error state, takes the error as parameter
  * @param onResult success state, takes the result as parameter
  */
-export const toVNodePending = <T>(onError: OnError, onResult: OnResult<T>) =>
-  toVNode(emptyVNode, loader, onError, onResult);
+export const toVNodesPending = <T>(onError: OnError, onResult: OnResult<T>) =>
+  toVNodes(emptyVNode, loader, onError, onResult);
