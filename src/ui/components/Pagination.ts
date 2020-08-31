@@ -3,6 +3,15 @@ import { RouterLink } from "vue-router";
 import { router } from "../router";
 import { useI18n } from "vue-i18n";
 
+/**
+ * Sets the page query variable preserving all other set values
+ * @param page the value to set
+ */
+const setPage = (page: number) => ({
+  ...router.currentRoute.value.query,
+  page
+});
+
 export const Pagination = defineComponent({
   props: {
     page: {
@@ -12,32 +21,23 @@ export const Pagination = defineComponent({
   },
   setup: props => () => {
     const { t } = useI18n();
+
     return h("div", { class: "flex" }, [
+      /**
+       * Display previous page link if not on first page
+       */
       props.page > 1
-        ? h(
-            RouterLink,
-            {
-              to: {
-                query: {
-                  ...router.currentRoute.value.query,
-                  page: props.page - 1
-                }
-              }
-            },
-            () => t("Previous page")
+        ? h(RouterLink, { to: { query: setPage(props.page - 1) } }, () =>
+            t("Previous page")
           )
         : null,
+
+      /**
+       * Display next page link
+       */
       h(
         RouterLink,
-        {
-          class: "ml-auto",
-          to: {
-            query: {
-              ...router.currentRoute.value.query,
-              page: props.page + 1
-            }
-          }
-        },
+        { class: "ml-auto", to: { query: setPage(props.page + 1) } },
         () => t("Next page")
       )
     ]);

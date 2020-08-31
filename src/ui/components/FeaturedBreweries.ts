@@ -4,31 +4,41 @@ import { useI18n } from "vue-i18n";
 import { RouterLink } from "vue-router";
 import { RouteName } from "../router";
 
+type Brewery = { name: string; id: number };
+
+/**
+ * Renders a featured brewery
+ * @param brewery the brewery to render
+ */
+const renderBrewery = ({ name, id }: Brewery) =>
+  h(
+    "li",
+    h(
+      RouterLink,
+      { to: { name: RouteName.Detail, params: { id } } },
+      () => name
+    )
+  );
+
 export const FeaturedBreweries = defineComponent({
   props: {
     breweries: {
-      type: Object as () => { name: string; id: number }[],
+      type: Object as () => Brewery[],
       required: true
     }
   },
   setup: props => () => {
     const { t } = useI18n();
     return [
+      /**
+       * Title
+       */
       h(Subtitle, () => t("Featured breweries")),
-      h(
-        "ul",
-        { class: "list-disc pl-6" },
-        props.breweries.map(({ name, id }) =>
-          h(
-            "li",
-            h(
-              RouterLink,
-              { to: { name: RouteName.Detail, params: { id } } },
-              () => name
-            )
-          )
-        )
-      )
+
+      /**
+       * List
+       */
+      h("ul", { class: "list-disc pl-6" }, props.breweries.map(renderBrewery))
     ];
   }
 });
