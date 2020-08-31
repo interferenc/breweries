@@ -25,10 +25,10 @@ console.log(option.toVNodes((v: string) => h('p', v))(none)) // null, will not b
 Since these folds are curried, it is very easy to create reusable helpers.
 
 ```ts
-// convert an option to an anchor
+// fold an Option<string> into an anchor
 export const toLink = toVNodes((v: string) => h("a", { href: v }, v));
 
-// convert an option to a paragraph
+// fold an Option<string> into a paragraph
 export const toParagraph = toVNodes((v: string) => h("p", v));
 ```
 
@@ -50,7 +50,7 @@ const result = ts.toVNodes(
   (result) => h('p', `success ${JSON.stringify(result)}`),
 )(taskState);
 
-// there is also a helper with an partially applied empty initial state a default loader
+// there is also a helper with an partially applied initial (empty) and pending (default loader) state
 const result2 = ts.toVNodesPending(
   (error) => h('p', `error ${JSON.stringify(error)}`),
   (result) => h('p', `success ${JSON.stringify(result)}`),
