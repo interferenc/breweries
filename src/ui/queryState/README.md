@@ -27,6 +27,8 @@ city.value = 'Berlin';
 
 Any arbitrary type that can be serialized into a string (and back) can be stored in the query string. In this showcase app we only provide examples for `number` and `string` types.
 
+These codecs are part of the [router](../router) of the application.
+
 ## Debouncing
 
 Updating the query string on rapid value changes for a computed variable would result in many history entries which could impair user experience (pressing the back button would have no visible effect).
