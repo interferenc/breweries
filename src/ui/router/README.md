@@ -13,11 +13,15 @@ Page level state is stored in the query string in this showcase application usin
 Some example codecs:
 
 ```ts
-// pushing strings to the query string (fairly trivial)
-export const stringEncoder = i => i;
-export const stringDecoder = i => i;
+console.log(stringEncoder('foo')); // 'foo'
+console.log(stringDecoder('foo')); // 'foo'
 
-// pushing numbers to the query string
-export const numberEncoder = (i: number) => i.toString();
-export const numberDecoder = (i: string) => parseInt(i, 10);
+console.log(numberEncoder(1)) // '1'
+console.log(numberDecoder('1')) // 1
+
+// Decoding can fail. When it does, we use the type specific fallback value, in this case 0;
+console.log(numberDecoder('bar')) // 0
+
+// An alternatie fallback value can also be specified
+console.log(numberDecoder('baz', 1)) // 1
 ```

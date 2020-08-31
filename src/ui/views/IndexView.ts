@@ -28,7 +28,7 @@ export const IndexView = defineComponent({
     const name = qs.string("name");
 
     /**
-     * Create ApiTask that fetches the list of breweries based on the current state of the filters and pagination.
+     * Create an ApiTask that fetches the list of breweries based on the current state of the filters and pagination.
      * Since we need this data right away, it executes the task immediately as well.
      */
     const { executeTask, taskState } = useApiTask(() =>

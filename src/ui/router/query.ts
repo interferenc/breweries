@@ -16,7 +16,7 @@ export interface QueryValueEncoder<T> {
  * Decodes any incoming query string value string into a type T.
  */
 export interface QueryValueDecoder<T> {
-  (data: string): T;
+  (data: string, fallback?: T): T;
 }
 
 export const stringEncoder: QueryValueEncoder<string> = i => i;
@@ -24,8 +24,13 @@ export const stringDecoder: QueryValueDecoder<string> = i => i;
 
 export const numberEncoder: QueryValueEncoder<number> = (i: number) =>
   i.toString();
-export const numberDecoder: QueryValueDecoder<number> = (i: string) =>
-  parseInt(i, 10);
+export const numberDecoder: QueryValueDecoder<number> = (
+  i: string,
+  fallback = 0
+) => {
+  const parsed = parseInt(i, 10);
+  return isNaN(parsed) ? fallback : parsed;
+};
 
 export const filterEmptyQueryValues = (query: Query): Query =>
   Object.keys(query).reduce((carry, key) => {
