@@ -26,12 +26,12 @@ The most important guiding principle is that _no component in any of the layers 
 
 ### Entities
 
-[Entities](entities) are all "things" the application works with: fetches them, create them, save them. All business rules about these entities should also be part of this layer, like validations, mutations and transformations.
+[Entities](src/entities) are all "things" the application works with: fetches them, create them, save them. All business rules about these entities should also be part of this layer, like validations, mutations and transformations.
 
 ### Services
 
-[Services](services) can depend on entities and other serves only. They are responsible of moving data to and from the application.
+[Services](src/services) can depend on entities and other serves only. They are responsible of moving data to and from the application.
 
 ### User Interface
 
-All the [user interfaces](ui) the users interact with are in this layer. It is very easy to accidently implement business rules inside this layer, but that should be avoided. Whenever possible, business rules should be defined in the Entities and Services layers.
+All the [user interfaces](src/ui) the users interact with are in this layer. It is very easy to accidently implement business rules inside this layer, but that should be avoided. Whenever possible, business rules should be defined in the Entities and Services layers.
