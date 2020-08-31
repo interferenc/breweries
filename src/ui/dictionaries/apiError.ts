@@ -2,9 +2,7 @@ import { ApiErrorCode } from "@/services/breweryDB/error";
 import { FORBIDDEN, NOT_FOUND } from "http-status-codes";
 import { lookup } from "./lookup";
 import { useI18n } from "vue-i18n";
-import { Lazy } from "fp-ts/lib/function";
-
-type LazyTranslationRecord<T extends number | string> = Record<T, Lazy<string>>;
+import { LazyTranslationRecord } from "./types";
 
 /**
  * Turn an ApiError code to a human readable string

@@ -1,5 +1,6 @@
-import { pipe, Lazy } from "fp-ts/lib/function";
+import { pipe } from "fp-ts/lib/function";
 import { getOrElse, tryCatch } from "fp-ts/lib/Option";
+import { LazyTranslationRecord } from "./types";
 
 /**
  * Look up a dictionary value
@@ -8,7 +9,7 @@ import { getOrElse, tryCatch } from "fp-ts/lib/Option";
  * @param fallback value to use when not found
  */
 export const lookup = <T extends string | number>(
-  dictionary: Record<T, Lazy<string>>,
+  dictionary: LazyTranslationRecord<T>,
   key: T,
   fallback: string
 ) =>

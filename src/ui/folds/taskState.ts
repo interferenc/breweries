@@ -1,7 +1,7 @@
 import { h } from "vue";
 import { VNodes } from "../types";
 import { ApiTaskState } from "../concerns/apiTask/ApiTaskState";
-import { ApiError } from "@/services/breweryDB/error";
+import { ApiError } from "@/services/breweryDB";
 import { Loader } from "../components";
 
 type constantVNodes = () => VNodes;

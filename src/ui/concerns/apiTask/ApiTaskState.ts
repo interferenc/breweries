@@ -1,4 +1,4 @@
-import { ApiError } from "@/services/breweryDB/error";
+import { ApiError } from "@/services/breweryDB";
 
 /**
  * The state of the async task represented with a discriminated union, making it umpossible to set an invalid state.

@@ -1,7 +1,7 @@
 import { TaskEither, fold } from "fp-ts/lib/TaskEither";
 import { task } from "fp-ts/lib/Task";
 import { pipe } from "fp-ts/lib/pipeable";
-import { ApiError } from "@/services/breweryDB/error";
+import { ApiError } from "@/services/breweryDB";
 import { ref, UnwrapRef } from "vue";
 import { ApiTask } from "./apiTask";
 import { ApiTaskState } from "./ApiTaskState";
