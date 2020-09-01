@@ -6,6 +6,9 @@ import {
   optionFromNullable
 } from "io-ts-types";
 
+/**
+ * The codec for a brewery
+ */
 export const breweryCodec = t.type({
   name: t.string,
   brewery_type: t.string,
@@ -20,6 +23,9 @@ export const breweryCodec = t.type({
   updated_at: DateFromISOString
 });
 
+/**
+ * The codec for a brewery list item
+ */
 export const breweryRecordCodec = t.type({
   id: t.number,
   name: t.string,
@@ -27,4 +33,7 @@ export const breweryRecordCodec = t.type({
   country: optionFromNullable(t.string)
 });
 
+/**
+ * The codec for a brewery list
+ */
 export const breweryListCodec = t.array(breweryRecordCodec);

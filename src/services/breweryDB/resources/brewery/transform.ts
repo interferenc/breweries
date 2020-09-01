@@ -3,6 +3,10 @@ import { breweryCodec, breweryRecordCodec, breweryListCodec } from "./codec";
 import { Brewery, BreweryRecord, BreweryList } from "@/entities";
 import { isSome, some, none, getOrElse } from "fp-ts/lib/Option";
 
+/**
+ * Transforms the decoded brewery data into a Brewery entity.
+ * @param brewery the decoded brewery data
+ */
 export const breweryTransformer = (
   brewery: t.TypeOf<typeof breweryCodec>
 ): Brewery => ({
@@ -15,6 +19,7 @@ export const breweryTransformer = (
     country: brewery.country
   },
   coordinates:
+    // TODO: there must be a better way of writing this
     isSome(brewery.longitude) && isSome(brewery.latitude)
       ? some({
           longitude: getOrElse<number>(() => 0)(brewery.longitude),
@@ -26,6 +31,10 @@ export const breweryTransformer = (
   updatedAt: brewery.updated_at
 });
 
+/**
+ * Transforms the decoded brewery list item data into a BreweryRecord entity
+ * @param brewery the decoded list item data
+ */
 export const breweryRecordTransformer = (
   brewery: t.TypeOf<typeof breweryRecordCodec>
 ): BreweryRecord => ({
@@ -37,6 +46,10 @@ export const breweryRecordTransformer = (
   }
 });
 
+/**
+ * Transforms the decoded brewery list data into a BreweryList entity
+ * @param breweryList the decoded list data
+ */
 export const breweryListTransformer = (
   breweryList: t.TypeOf<typeof breweryListCodec>
 ): BreweryList => breweryList.map(breweryRecordTransformer);
