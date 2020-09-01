@@ -18,4 +18,4 @@ export const string: QueryValueEncoder<string> = i => i.replace(/ /g, "_");
  */
 export const number: QueryValueEncoder<number> = (i: number) => i.toString();
 
-export { Query, setQuery } from "@/services/http";
+export { setQuery } from "@/services/http";

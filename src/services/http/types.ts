@@ -7,12 +7,3 @@ export const enum HttpHeader {
   Authorization = "Authorization",
   ContentType = "Content-Type"
 }
-
-export type Header = [HttpHeader, string];
-
-/**
- * A key/value store that can be serialized into a query string.
- */
-export interface Query {
-  [name: string]: string;
-}

@@ -6,7 +6,6 @@ import { breweryListTransformer, breweryTransformer } from "./transform";
 import {
   authorizedApiGetRequest,
   setQuery,
-  Query,
   execute,
   decode
 } from "@/services/breweryDB";
@@ -36,11 +35,12 @@ interface BreweryListQuery {
  * Encodes the provided query values into strings that can be used in the query string.
  * @param query the query values to encode
  */
-const encodeBreweryListQuery = (query: BreweryListQuery): Query => ({
-  by_city: q.string(query.city),
-  by_name: q.string(query.name),
-  page: q.number(query.page)
-});
+const encodeBreweryListQuery = (query: BreweryListQuery) =>
+  new URLSearchParams({
+    by_city: q.string(query.city),
+    by_name: q.string(query.name),
+    page: q.number(query.page)
+  });
 
 /**
  * Get a list of breweries
