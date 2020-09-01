@@ -10,7 +10,7 @@ interface QueryValueEncoder<T> {
  * Encodes a string to be used as query string value for the brewery DB API
  * @param i the value to encode
  */
-export const string: QueryValueEncoder<string> = i => i;
+export const string: QueryValueEncoder<string> = i => i.replace(/ /g, "_");
 
 /**
  * Encodes a number to be used as query string value for the brewery DB API

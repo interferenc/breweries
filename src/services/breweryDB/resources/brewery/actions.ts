@@ -10,6 +10,7 @@ import {
   execute,
   decode
 } from "@/services/breweryDB";
+import * as q from "../../query";
 
 const BASE_URL = "https://api.openbrewerydb.org/breweries";
 const recordUrl = (id: number): string => `${BASE_URL}/${id}`;
@@ -21,9 +22,9 @@ interface BreweryListQuery {
 }
 
 const encodeBreweryListQuery = (query: BreweryListQuery): Query => ({
-  by_city: query.city,
-  by_name: query.name,
-  page: query.page.toString()
+  by_city: q.string(query.city),
+  by_name: q.string(query.name),
+  page: q.number(query.page)
 });
 
 export const getList = (query: BreweryListQuery) =>
