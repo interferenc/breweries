@@ -1,8 +1,8 @@
 module.exports = {
-  purge: [],
+  purge: ["./src/ui/**/*.ts"],
   theme: {
-    extend: {},
+    extend: {}
   },
   variants: {},
-  plugins: [],
-}
+  plugins: []
+};
