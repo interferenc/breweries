@@ -19,7 +19,7 @@ const request = getRequest('some url');
 
 ## Set headers
 
-The `setHeader` function can be used to add some HTTP headers to a `Request` object. This function does not mutate the original request.
+The `setHeader` function can be used to add some HTTP headers to a `Request` object. This function does not mutate the original `Request`.
 
 ```ts
 import { setHeaders, getRequest } from '@/services/http';
@@ -45,7 +45,7 @@ const requestWithAuthHeaders = authorizedGetRequest('some url);
 
 ## Set query string
 
-The `setQuery` function can be used to add query string variables to a `Request` object. This function does not mutate the original request.
+The `setQuery` function can be used to add query string variables to a `Request` object. This function does not mutate the original `Request`.
 
 ```ts
 import { setQuery, getRequest } from '@/services/http';
@@ -56,12 +56,12 @@ const requestWithParam = setQuery({
 
 // create reusable query function
 const addFooBar = setQuery({ foo: 'bar' });
-const requestWithFooBar = setQuery(getRequest('some url'));
+const requestWithFooBar = addFooBar(getRequest('some url'));
 ```
 
 ## Set body
 
-For the purposes of this showcase application, a function to set the body was not implemented, but in a real world app, there would be one.
+For the purposes of this showcase application, a function to set the body was not implemented.
 
 ## Execute request
 
