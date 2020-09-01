@@ -2,6 +2,8 @@
 
 A showcase Vue.js application to spread the word on robust SPA development.
 
+The working application is available at [https://interferenc.github.io/breweries](https://interferenc.github.io/breweries).
+
 ## Common SPA pitfalls
 
 There are some really common problems with most SPAs. The purpose of this application is to show an example on how to handle these problems:
