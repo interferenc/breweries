@@ -10,7 +10,7 @@ The working application is available at [https://interferenc.github.io/breweries
 
 There are some really common problems with most SPAs. The purpose of this application is to show an example on how to handle these problems:
 
-- loosing page level state when URL is shared or bookmarked
+- losing page level state when URL is shared or bookmarked
 - concurrent async operations cause flickering or unanticipated state
 - runtime errors breaking the application
 - validate all incoming data to enforce contracts and avoid impossible states
