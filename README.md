@@ -1,4 +1,6 @@
-# Brewery DB
+# How to build robust frontend applications: Brewery DB
+
+![robust as a rock](https://images.unsplash.com/photo-1525857597365-5f6dbff2e36e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80)
 
 A showcase Vue.js application to spread the word on robust SPA development.
 
