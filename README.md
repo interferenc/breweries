@@ -40,7 +40,7 @@ All business rules about these entities should also be part of this layer, like:
 
 ### Services
 
-[Services](src/services) can depend on entities and other services only. They are responsible for moving data to and from the application, as well enforcing related business rules, like:
+[Services](src/services) can depend on entities and other services only. They are responsible for moving data to and from the application, as well as enforcing related business rules like:
 
 - packing and unpacking all incoming and outgoing data
 - validating contracts: making sure the incoming data is what was promised
