@@ -25,14 +25,14 @@ The `setHeader` function can be used to add some HTTP headers to a `Request` obj
 import { setHeaders, getRequest } from '@/services/http';
 import { flow } from "fp-ts/lib/function";
 
-const requestWithHeader = setHeader([
-    ['Accept', 'application/json']
-])(getRequest('some url'));
+const requestWithHeader = setHeaders(new Headers({
+    'Accept': 'application/json',
+}))(getRequest('some url'));
 
 // create reusable header function
-const setAuthorizationHeaders = setHeaders([
-  ['Authorization', 'Bearer token']
-]);
+const setAuthorizationHeaders = setHeaders(new Headers({
+  'Authorization': 'Bearer token',
+});
 
 // function that returns a get request with the authorization headers applied
 const authorizedGetRequest = flow(
@@ -50,12 +50,12 @@ The `setQuery` function can be used to add query string variables to a `Request`
 ```ts
 import { setQuery, getRequest } from '@/services/http';
 
-const requestWithParam = setQuery({
+const requestWithParam = setQuery(new URLSearchParams({
     foo: 'bar',
-})(getRequest('some url'));
+}))(getRequest('some url'));
 
 // create reusable query function
-const addFooBar = setQuery({ foo: 'bar' });
+const addFooBar = setQuery(new URLSearchParams({ foo: 'bar' }));
 const requestWithFooBar = addFooBar(getRequest('some url'));
 ```
 
