@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { string } from "./types";
+import { string, number } from "./types";
 import { router } from "@/ui/router";
 
 jest.useFakeTimers();
@@ -41,5 +41,45 @@ describe("UI / Query State", () => {
 
     // assert
     expect(router.currentRoute.value.query.foo).toBe("baz");
+  });
+
+  it("debounces writes to the query string", () => {
+    // arrange
+    router.push({ query: { foo: "bar" } });
+    const foo = string("foo");
+
+    // assert
+    foo.value = "baz";
+    expect(router.currentRoute.value.query.foo).toBe("bar");
+    jest.advanceTimersByTime(100);
+    expect(router.currentRoute.value.query.foo).toBe("bar");
+    foo.value = "daz";
+    expect(router.currentRoute.value.query.foo).toBe("bar");
+    jest.advanceTimersByTime(500); // the debounce timeout
+    expect(router.currentRoute.value.query.foo).toBe("daz");
+  });
+
+  it("encodes a number properly", () => {
+    // arrange
+    router.push({ query: {} });
+    const foo = number("foo");
+
+    // act
+    foo.value = 199;
+    jest.runAllTimers();
+
+    // assert
+    expect(router.currentRoute.value.query.foo).toBe("199");
+  });
+
+  it("decodes a number properly", () => {
+    // arrange
+    router.push({ query: { foo: "199" } });
+
+    // act
+    const foo = number("foo");
+
+    // assert
+    expect(foo.value).toBe(199);
   });
 });
