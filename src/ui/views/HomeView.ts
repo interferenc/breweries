@@ -1,8 +1,8 @@
-import { h, ref, reactive, defineComponent } from "vue";
+import { h, defineComponent } from "vue";
 import { RouterLink } from "vue-router";
 import { RouteName } from "../router/types";
 import { useI18n } from "vue-i18n";
-import { Box, Title, Subtitle } from "../components";
+import { Box, Title } from "../components";
 
 export const HomeView = defineComponent({
   setup() {
