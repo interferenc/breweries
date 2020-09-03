@@ -1,10 +1,13 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import { routes } from "./routes";
 
 /**
  * Creates the router using the routes
  */
 export const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  /**
+   * This app is deployed on GitHub pages, so no way to use proper URLs.
+   */
+  history: createWebHashHistory(process.env.BASE_URL),
   routes
 });

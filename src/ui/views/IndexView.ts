@@ -59,38 +59,37 @@ export const IndexView = defineComponent({
     /**
      * Renders the view
      */
-    return () =>
-      h("div", [
-        /**
-         * Page title
-         */
-        h(Title, () => t("Breweries")),
+    return () => [
+      /**
+       * Page title
+       */
+      h(Title, () => t("Breweries")),
 
-        /**
-         * Filtering form
-         */
-        h("form", { class: "py-4 sm:flex" }, [
-          h(Filter, {
-            label: t("Name"),
-            value: name.value,
-            onInput: (value: string) => updateFilter(() => (name.value = value))
-          }),
-          h(Filter, {
-            label: t("City"),
-            value: city.value,
-            onInput: (value: string) => updateFilter(() => (city.value = value))
-          })
-        ]),
+      /**
+       * Filtering form
+       */
+      h("form", { class: "py-4 sm:flex" }, [
+        h(Filter, {
+          label: t("Name"),
+          value: name.value,
+          onInput: (value: string) => updateFilter(() => (name.value = value))
+        }),
+        h(Filter, {
+          label: t("City"),
+          value: city.value,
+          onInput: (value: string) => updateFilter(() => (city.value = value))
+        })
+      ]),
 
-        /**
-         * Results table and pagination
-         * The `ts.toVNodesPending` folds any taskState into renderable VNodes.
-         */
-        ts.toVNodesPending(
-          error => h(ErrorMessage, { error, onRetry: executeTask }),
-          (list: BreweryList) => h(Box, () => h(BreweryTable, { list }))
-        )(taskState.value),
-        h(Pagination, { page: page.value })
-      ]);
+      /**
+       * Results table and pagination
+       * The `ts.toVNodesPending` folds any taskState into renderable VNodes.
+       */
+      ts.toVNodesPending(
+        error => h(ErrorMessage, { error, onRetry: executeTask }),
+        (list: BreweryList) => h(Box, () => h(BreweryTable, { list }))
+      )(taskState.value),
+      h(Pagination, { page: page.value })
+    ];
   }
 });

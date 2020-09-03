@@ -1,6 +1,7 @@
 export * from "./Box";
 export * from "./BreweryTable";
 export * from "./Button";
+export * from "./Container";
 export * from "./ErrorMessage";
 export * from "./FeaturedBreweries";
 export * from "./Filter";

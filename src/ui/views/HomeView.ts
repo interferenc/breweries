@@ -9,9 +9,9 @@ export const HomeView = defineComponent({
     const { t } = useI18n();
 
     return () =>
-      h(Box, { class: "w-1/2 mx-auto bg-white rounded-lg my-12" }, () => [
-        h(Title, () => t("Brewery Search")),
-        h("p", t("a showcase Vue.js application")),
+      h(Box, { class: "my-48" }, () => [
+        h(Title, () => t("Brewery DB Search")),
+        h("p", t("A showcase Vue.js application")),
         h(RouterLink, { to: { name: RouteName.Index } }, () =>
           t("See breweries")
         )
