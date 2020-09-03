@@ -6,6 +6,7 @@ jest.useFakeTimers();
 
 jest.mock("vue-router", () => ({
   createWebHistory: () => {},
+  createWebHashHistory: () => {},
   createRouter: () => {
     const mockCurrentRoute = ref({ query: {} });
     return {
